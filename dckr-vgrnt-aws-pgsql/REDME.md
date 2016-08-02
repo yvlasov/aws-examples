@@ -18,3 +18,10 @@ http://docs.ansible.com/ansible/intro_windows.html#windows-how-does-it-work
 #Automated PostgreSQL install and configuration with PowerShell
 
 https://coderwall.com/p/r6nqrw/automated-postgresql-install-and-configuration-with-powershell
+
+```
+C:\Users\Administrator\Documents\WindowsPowerShell\Modules\Install-Postgres\
+
+Import-Module Install-Postgres -Force
+Install-Postgres -User "postgres" -Password "ChangeMe!"
+```
