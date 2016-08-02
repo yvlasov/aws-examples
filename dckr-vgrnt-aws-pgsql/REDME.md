@@ -14,3 +14,7 @@ https://www.azavea.com/blog/2014/10/30/running-vagrant-with-ansible-provisioning
 #Windows: How Does It Work
 
 http://docs.ansible.com/ansible/intro_windows.html#windows-how-does-it-work
+
+#Automated PostgreSQL install and configuration with PowerShell
+
+https://coderwall.com/p/r6nqrw/automated-postgresql-install-and-configuration-with-powershell
