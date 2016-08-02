@@ -25,3 +25,12 @@ C:\Users\Administrator\Documents\WindowsPowerShell\Modules\Install-Postgres\
 Import-Module Install-Postgres -Force
 Install-Postgres -User "postgres" -Password "ChangeMe!"
 ```
+```
+Install-Postgres : The term 'Set-Owner' is not recognized as the name of a cmdlet, function, script file, or operable
+program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ Install-Postgres -User "postgres" -Password "ChangeMe!"
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException
+    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,Install-Postgres
+```
