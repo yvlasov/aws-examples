@@ -1,0 +1,24 @@
+{
+  "builders": [{
+    "type": "amazon-ebs",
+    "region": "us-west-2",
+    "instance_type": "t2.micro",
+    "source_ami": "ami-dfccd1ef",
+    "ami_name": "windows-ami-01",
+    "user_data_file": "bootstrap-aws.txt",
+    "communicator": "winrm",
+    "winrm_username": "Administrator",
+    "winrm_password": "notsosecret",
+    "winrm_timeout": "4h",
+    "subnet_id": "subnet-1234abcd",
+    "security_group_id": "sg-bbbb2222",
+    "access_key": "AAAAAAAAAAAAAAAAAAAA",
+    "secret_key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  }],
+  "provisioners": [{
+    "type": "powershell",
+    "scripts": [
+      "install-chef.ps1"
+    ]
+  }]
+}
