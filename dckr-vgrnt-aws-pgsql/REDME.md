@@ -37,4 +37,8 @@ At line:1 char:1
 ```
 win-2008r2 ami-a2d017cf 
 region=us-east-1#Launch
+
+5985 (HTTP) and 5986 (HTTPS).
+
 ```
+
