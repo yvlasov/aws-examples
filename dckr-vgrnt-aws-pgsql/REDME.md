@@ -34,3 +34,7 @@ At line:1 char:1
     + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException
     + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,Install-Postgres
 ```
+```
+win-2008r2 ami-a2d017cf 
+region=us-east-1#Launch
+```
