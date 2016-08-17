@@ -1,0 +1,8 @@
+FROM jboss/wildfly
+
+ADD https://us-west-2-aws-training.s3.amazonaws.com/awsu-spl/spl49-deploy-java-ee-app/static/JavaEEDemo.war /opt/jboss/wildfly/standalone/deployments/
+USER root
+RUN chown jboss:jboss /opt/jboss/wildfly/standalone/deployments/JavaEEDemo.war
+USER jboss
+RUN /opt/jboss/wildfly/standalone/log
+EXPOSE 8080

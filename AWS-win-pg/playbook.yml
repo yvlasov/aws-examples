@@ -1,0 +1,10 @@
+---
+- hosts: ~.*
+  gather_facts: false
+  tasks:
+    - name: run ipconfig
+      raw: ipconfig
+      register: ipconfig
+    - debug: var=ipconfig
+    - raw: Import-Module Install-Postgres -Force
+    - raw: 'Install-Postgres -User "postgres" -Password "ChangeMe!"'
