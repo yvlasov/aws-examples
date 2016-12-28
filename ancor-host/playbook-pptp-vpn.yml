@@ -1,0 +1,8 @@
+---
+- name: 'Deploing VPN'
+  hosts: '{{hosts}}'
+  gather_facts: no
+  vars:
+    put_your_vars: here
+  roles:
+  - pptp-vpn
