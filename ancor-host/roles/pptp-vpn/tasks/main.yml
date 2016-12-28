@@ -38,11 +38,10 @@
 - name: Configure secrets
   lineinfile:
     dest: /etc/ppp/chap-secrets
-    regexp: "^{{ item.user }}"
-    line: "{{ item.user }} pptpd {{ item.password }} *"
-  with_items:
-    - user: '{{ ansible_user }}'
-      password: '{{ password }}'
+    regexp: "^{{ item.name }}"
+    line: "{{ item.name }} pptpd {{ item.password }} *"
+  with_items: 
+    '{{pptp_users}}'
   notify: restart pptpd
   tags: pptp
 
