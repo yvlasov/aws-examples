@@ -1,0 +1,74 @@
+---
+- name: Install PPTP packages
+  package:
+    name: "{{ pptp_package }}"
+    state: present
+  tags: pptp
+
+- name: Set local and remote IPs
+  lineinfile:
+    dest: /etc/pptpd.conf
+    regexp: "^{{ item.param }}"
+    line: "{{ item.param }} {{ item.value}}"
+  with_items:
+    - param: localip
+      value: "{{ hostvars[inventory_hostname]['ansible_' + pptp_interface]['ipv4']['address'] }}"
+    - param: remoteip
+      value: "{{ pptp_iprange }}"
+  notify: restart pptpd
+  tags: pptp
+
+- name: Remove DNS
+  lineinfile:
+    dest: /etc/ppp/pptpd-options
+    regexp: "^ms-dns"
+    state: absent
+  notify: restart pptpd
+  tags: pptp
+
+- name: Configure DNS
+  lineinfile:
+    dest: /etc/ppp/pptpd-options
+    line: "ms-dns {{ item }}"
+  with_items:
+    "{{ pptp_dns }}"
+  notify: restart pptpd
+  tags: pptp
+
+- name: Configure secrets
+  lineinfile:
+    dest: /etc/ppp/chap-secrets
+    regexp: "^{{ item.user }}"
+    line: "{{ item.user }} pptpd {{ item.password }} *"
+  with_items:
+    - user: '{{ ansible_user }}'
+      password: '{{ password }}'
+  notify: restart pptpd
+  tags: pptp
+
+- name: Enable packet forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    reload: yes
+  tags: pptp
+
+- name: Configure iptables
+  lineinfile:
+    dest: /etc/rc.local
+    line: "{{ item }}"
+    insertbefore: "exit 0"
+  with_items:
+    - 'iptables -t nat -A POSTROUTING -s {{ pptp_netmask }} -o {{ pptp_interface }} -j MASQUERADE'
+    - 'iptables -A FORWARD -p tcp --syn -s {{ pptp_netmask }} -j TCPMSS --set-mss {{ pptp_mtu }}'
+  notify: restart pptpd
+  tags: pptp
+
+- name: Start PPTP service
+  service:
+    name: pptpd
+    state: started
+    enabled: yes
+  notify: restart pptpd
+  tags: pptp

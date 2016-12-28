@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+{% for user in samba_users %}
+{% if user.win_name is defined %}
+{{ user.name }}={{ user.win_name }}
+{% endif %}
+{% endfor %}
