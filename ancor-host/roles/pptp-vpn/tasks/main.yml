@@ -1,8 +1,11 @@
 ---
 - name: Install PPTP packages
-  package:
-    name: "{{ pptp_package }}"
+  apt:
+    name: "{{ item }}"
     state: present
+  with_items:
+  - 'netfilter-persistent'
+  - '{{pptp_package}}'
   tags: pptp
 
 - name: Set local and remote IPs
@@ -35,6 +38,13 @@
   notify: restart pptpd
   tags: pptp
 
+- name: Configure MTU
+  lineinfile:
+    dest: /etc/ppp/pptpd-options
+    line: "mtu {{ pptp_mtu }}"
+  notify: restart pptpd
+  tags: pptp
+
 - name: Configure secrets
   lineinfile:
     dest: /etc/ppp/chap-secrets
@@ -54,13 +64,12 @@
   tags: pptp
 
 - name: Configure iptables
-  lineinfile:
-    dest: /etc/rc.local
-    line: "{{ item }}"
-    insertbefore: "exit 0"
+  shell: "{{ item }}"
   with_items:
-    - 'iptables -t nat -A POSTROUTING -s {{ pptp_netmask }} -o {{ pptp_interface }} -j MASQUERADE'
-    - 'iptables -A FORWARD -p tcp --syn -s {{ pptp_netmask }} -j TCPMSS --set-mss {{ pptp_mtu }}'
+    - 'iptables-save | grep -v "pptp_{{pptp_interface}}" | iptables-restore'
+    - 'iptables -t nat -A POSTROUTING -s {{ pptp_netmask }} -o {{ pptp_interface }} -m comment --comment "pptp_{{pptp_interface}}" -j MASQUERADE'
+    - 'iptables -A FORWARD -p tcp --syn -s {{ pptp_netmask }} -m comment --comment "pptp_{{pptp_interface}}" -j TCPMSS --set-mss {{ pptp_mtu - 40 }}'
+    - '/etc/init.d/netfilter-persistent save'
   notify: restart pptpd
   tags: pptp
 

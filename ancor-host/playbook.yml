@@ -3,11 +3,8 @@
   hosts: ~.*
   gather_facts: yes
   pre_tasks:
-  - set_fact: vpc_ip='{{hostvars[inventory_hostname]["ansible_"+vpc_if].ipv4.address}}'
-    when: ( vpc_if is defined )
-  - set_fact: vpc_ip='{{ansible_default_ipv4.address}}'
-    when: ( vpc_if is not defined )
+  - debug: msg='{{inventory_hostname}}'
 
 - include: playbook-pptp-vpn.yml
   vars:
-    hosts: vpn.{{deploy_domain}}
+    hosts: 'vpn.{{deploy_domain}}'

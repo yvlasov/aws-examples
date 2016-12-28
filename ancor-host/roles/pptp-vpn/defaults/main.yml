@@ -2,9 +2,9 @@ pptp_package: pptpd
 pptp_dns:
   - 8.8.8.8
   - 8.8.4.4
-pptp_netmask: 192.168.0.0/24
+pptp_netmask: 172.16.231.0/24
 pptp_mtu: 1356
-pptp_iprange: 192.168.1.201-255
+pptp_iprange: 172.16.231.232-255
 pptp_interface: eth0
 pptp_users:
 - name: 'vpn'
